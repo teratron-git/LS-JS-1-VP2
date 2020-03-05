@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Сергей Терешков | Выпускная работа №2| Чат </title>
+	<!-- <link href="http://allfont.ru/allfont.css?fonts=book-antiqua" rel="stylesheet" type="text/css" /> -->
+	<link rel="stylesheet" href="css/style.css">
+	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/minireset.css/0.0.2/minireset.min.css"> -->
+
+</head>
+
+<body>
+	<div class="overlay">
+		<div class="popup">
+			<div class="iconCirlce">
+				<div class="icon"></div>
+			</div>
+			<div class="popup-close">&times;</div>
+
+			<div class="popup-form">
+				<div class="popup-form__header">Авторизация
+
+					<label for="name" class="popup-form__label">Введите, пожалуйста, ваш и ФИО и ник<br>
+						для дальнейшей авторизации</label>
+					<input type="text" class="popup-form__input" id="name" name="name"
+						placeholder="Введите свою фамилию и имя" required autocomplete="off">
+					<input type="text" class="popup-form__input" id="nick" name="nick" placeholder="Введите свой ник"
+						required autocomplete="off">
+					<button class=" popup-form__btn button">ВОЙТИ</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="main">
+		<div class="main-userPanel">main-userPanel</div>
+		<div class="main-conversationPanel">
+			<div class="main-conversationPanel-header">1</div>
+			<div class="main-conversationPanel-chat">2</div>
+			<div class="main-conversationPanel-message">
+				<input type="text" class="main-conversationPanel-message_input" id="message" name="nick"
+					placeholder="Введите сообщение..." required autocomplete="off">
+				<div class="button main-conversationPanel-message_button" id="sB">Отправить</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<script src="js/index.js"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"
+		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+	<script>
+		$(document).ready(function () {
+
+			$('.main-button').on("click", function () {
+				$('.overlay').show();
+			});
+
+			$('.menu-icons__edit').on("click", function () {
+				$('.overlay').show();
+			});
+
+			$('.menu-icons__search').on("click", function () {
+				$('.menu-icons__search-plus').show();
+			});
+
+			$('.video-button').on("click", function () {
+				$('.overlay').show();
+			});
+
+			$('.footer-button').on("click", function () {
+				$('.overlay').show();
+			});
+
+			$('.popup-close').on("click", function () {
+				$('.overlay').hide();
+			});
+
+			$('.popup-close').on("click", function () {
+				$('.overlay-thanks').hide();
+			});
+		});
+	</script>
+</body>
+
+</html>
