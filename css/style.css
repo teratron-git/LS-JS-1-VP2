@@ -334,6 +334,8 @@ a div:hover {
   background-color: #17212b;
   display: inline-block;
   flex-grow: 1;
+  position: relative;
+  margin: 0 auto;
 }
 
 .main-conversationPanel {
@@ -408,4 +410,41 @@ a div:hover {
   border: 2px solid rgba(0, 0, 0, .3);
   display: inline-block;
   position: relative;
+}
+
+.message-item {
+  text-align: right;
+}
+
+.user-item {
+  width: 300px;
+  height: 100px;
+  margin-top: 50px;
+  margin-left: 20px;
+  position: relative;
+  text-align: left;
+}
+
+.icon-item {
+  content: '';
+  display: inline-block;
+  background: url(../img/cameraIcon.png) no-repeat center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #242f3d;
+}
+
+.name-item {
+  margin-left: 90px;
+  display: inline-block;
+
+  height: 100px;
+  line-height: 80px;
+  font-size: 20px;
+
 }
