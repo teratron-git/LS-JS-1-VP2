@@ -6,15 +6,64 @@ const wss = new WebSocket.Server({
 
 let client;
 let message;
-let users = [];
+let usersOnline = [];
+let usersOffline = [];
 let clients = [];
 let messages = [];
+
+function createNewUser(data) {
+    data = JSON.parse(data);
+    let user;
+
+    if (data.action == 'logInAct') {
+        let isOldUser = false;
+
+        if (usersOffline != '') {
+            for (let userItem of usersOffline) {
+                if (userItem.name == data.name) {
+                    user = userItem;
+                    isOldUser = true;
+                    break;
+                } else {
+                    isOldUser = false;
+                }
+            }
+        } else {
+            user = {
+                name: data.name || '',
+                nick: data.nick || '',
+                message: data.message || '',
+                avatar: data.avatar || '',
+                action: data.action || ''
+            };
+
+            usersOnline.push(user);
+            usersOffline.push(user);
+            isOldUser = true;
+        }
+
+        if (!isOldUser) {
+            user = {
+                name: data.name || '',
+                nick: data.nick || '',
+                message: data.message || '',
+                avatar: data.avatar || '',
+                action: data.action || ''
+            };
+
+            usersOnline.push(user);
+            usersOffline.push(user);
+        }
+    }
+
+    return user;
+}
 
 wss.on('connection', function connection(ws) {
 
     let user;
     ws.on('message', function incoming(data) {
-        data = JSON.parse(data);
+        // data = JSON.parse(data);
         // console.log(data);
         // console.log(data.name);
         // console.log(data.nick);
@@ -22,49 +71,49 @@ wss.on('connection', function connection(ws) {
         // console.log(data.avatar);
         // console.log(data.action);
 
-        if (users == '') {
-            user = {
-                name: data.name || '',
-                nick: data.nick || '',
-                message: data.message || '',
-                avatar: data.avatar || '',
-                action: data.action || '',
-                status: 'online'
-            };
-            console.log("ПЕРВЫЙ");
-        } else if (user.name != data.name) {
-            user = {
-                name: data.name || '',
-                nick: data.nick || '',
-                message: data.message || '',
-                avatar: data.avatar || '',
-                action: data.action || '',
-                status: 'online'
-            };
-            console.log("НОВЫЙ");
-        } else {
-            console.log("СТАРЫЙ");
-        }
+        // if (users == '') {
+        //     user = {
+        //         name: data.name || '',
+        //         nick: data.nick || '',
+        //         message: data.message || '',
+        //         avatar: data.avatar || '',
+        //         action: data.action || '',
+        //         status: 'online'
+        //     };
+        //     console.log("ПЕРВЫЙ");
+        // } else if (user.name != data.name) {
+        //     user = {
+        //         name: data.name || '',
+        //         nick: data.nick || '',
+        //         message: data.message || '',
+        //         avatar: data.avatar || '',
+        //         action: data.action || '',
+        //         status: 'online'
+        //     };
+        //     console.log("НОВЫЙ");
+        // } else {
+        //     console.log("СТАРЫЙ");
+        // }
+        user = createNewUser(data);
 
 
 
+        // if (user.action == 'logInAct') {
 
-        if (user.action == 'logInAct') {
+        //     users.push(user);
+        //     // clients.push(client);
+        //clients[user.name] = ws;
+        //     messages[user.name] = user.message;
+        //console.log("ТЕКУЩИЙ КЛИЕНТ:", clients[user.name], "\n");
+        // }
 
-            users.push(user);
-            // clients.push(client);
-            clients[user.name] = ws;
-            messages[user.name] = user.message;
-            //console.log("ТЕКУЩИЙ КЛИЕНТ:", clients[user.name], "\n");
-        }
+        // if (user.action == 'messageAct') {
+        //     messages.push(user.message);
+        // }
 
-        if (user.action == 'messageAct') {
-            messages.push(user.message);
-        }
-
-        console.log("Все юзеры:", users, "\n");
+        console.log("Все юзеры:", usersOffline, "\n");
         //console.log("Все клиенты:", clients, "\n");
-        console.log("Все сообщения:", messages, "\n");
+        //console.log("Все сообщения:", messages, "\n");
 
 
 
@@ -79,20 +128,20 @@ wss.on('connection', function connection(ws) {
                 // console.log("Все сообщения:", messages);
                 // console.log('======');
 
-                if (user.action == 'logInAct' && user.status == 'online') {
-                    let usersParsed = JSON.stringify(users);
-                    client.send(usersParsed);
+                // if (user.action == 'logInAct' && user.status == 'online') {
+                //     let usersParsed = JSON.stringify(users);
+                //     client.send(usersParsed);
 
-                    // user = JSON.stringify(user);
-                    // client.send(user);
-                    // console.log('logInAct', user);
+                //     // user = JSON.stringify(user);
+                //     // client.send(user);
+                //     // console.log('logInAct', user);
 
-                } else {
-                    // user = JSON.stringify(user);
-                    // //client.send(`${user.name} (${user.nick}): ${user.message}, ${user.avatar}, ${user.action}`);
-                    // client.send(user);
-                    // console.log('elseAct', user);
-                }
+                // } else {
+                //     // user = JSON.stringify(user);
+                //     // //client.send(`${user.name} (${user.nick}): ${user.message}, ${user.avatar}, ${user.action}`);
+                //     // client.send(user);
+                //     // console.log('elseAct', user);
+                // }
 
 
 
@@ -103,22 +152,23 @@ wss.on('connection', function connection(ws) {
     ws.on('close', function close(e) {
 
         //console.log('Сеанс закрыт', ws);
-        console.log("Все юзеры:", users, "\n");
+        //console.log("Все юзеры:", users, "\n");
         console.log("Все сообщения:", messages, "\n");
         //console.log("Все клиенты ДО:", clients, "\n");
         //user = JSON.parse(user);
 
-        for (let userItem of users) {
-            if (user.name == userItem.name)
-                userItem.status = 'offline';
-        }
+        // for (let userItem of users) {
+        //     if (user.name == userItem.name)
+        //         userItem.status = 'offline';
+        // }
 
-        console.log("Все юзеры ОФФ:", users, "\n");
-        console.log("Один юзер:", user, "\n");
-        console.log("ТЕКУЩИЙ СТУТУС:", users[user.status], "\n");
+        //console.log("Все юзеры ОФФ:", users, "\n");
+        //console.log("Один юзер:", user, "\n");
+        //console.log("ТЕКУЩИЙ СТУТУС:", users[user.status], "\n");
         //console.log("ТЕКУЩИЙ КЛИЕНТ:", clients[user.name], "\n");
-        delete clients[user.name];
-        console.log("Все клиенты ПОСЛЕ удаления:", clients, "\n");
+        //delete clients[user.name];
+        //delete usersOnline[user.name];
+        //console.log("Все клиенты ПОСЛЕ удаления:", clients, "\n");
 
     });
 
