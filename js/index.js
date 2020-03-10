@@ -12,14 +12,16 @@ function initApp() {
         let logInName = document.querySelector('#name').value;
         let logInNick = document.querySelector('#nick').value;
 
-        let client = {
+        clientData = {
             name: logInName,
             nick: logInNick,
+            message: '',
+            avatar: '',
             action: 'logInAct'
         };
-        socket.send(JSON.stringify(client));
-        console.log('отправили на сервер залогиненного клиента', client);
-        return client;
+        socket.send(JSON.stringify(clientData));
+        console.log('отправили на сервер залогиненного клиента', clientData);
+        return clientData;
     }
 
     logInBtn.addEventListener('click', e => {
@@ -87,6 +89,8 @@ function initApp() {
     }
 
     sendMessageButton.addEventListener('click', sendMessage);
+    sendMessageInput.addEventListener('change', sendMessage);
+
 
 
 
