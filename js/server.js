@@ -15,13 +15,17 @@ function createNewUser(data) {
     data = JSON.parse(data);
     let user;
 
-    if (data.action == 'logInAct') {
+    if (data.action == 'logInAct' || data.action == 'delAct') {
         let isOldUser = false;
 
         if (usersOffline != '') {
             for (let userItem of usersOffline) {
                 if (userItem.name == data.name) {
                     user = userItem;
+                    if (user.action == 'delAct') {
+                        user.action = 'logInAct';
+                        usersOnline.push(user);
+                    }
                     isOldUser = true;
                     break;
                 } else {
@@ -55,11 +59,12 @@ function createNewUser(data) {
             usersOffline.push(user);
         }
     }
-
+    
     return user;
 }
 
 wss.on('connection', function connection(ws) {
+
 
     let user;
     ws.on('message', function incoming(data) {
@@ -119,7 +124,29 @@ wss.on('connection', function connection(ws) {
 
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
+                
+                if (usersOnline != '') {
+                    if (client == ws) {
+                        let usersParsed = JSON.stringify(usersOnline);
+                        client.send(usersParsed);
+                    } else {
+                        let usersParsed = JSON.stringify(user);
+                        client.send(usersParsed);
+                    }
+                } else {
+                    let usersParsed = JSON.stringify(user);
+                    client.send(usersParsed);
+                }
 
+                // usersOnline.forEach((item)=>{
+                //     if (user.name==item.name) {
+                //         let usersParsed = JSON.stringify(user);
+                //         client.send(usersParsed);
+                //     }
+                // })
+
+
+                
                 // console.log('======');
                 // console.log("Все юзеры:", users);
                 // console.log('======');
@@ -169,6 +196,39 @@ wss.on('connection', function connection(ws) {
         //delete clients[user.name];
         //delete usersOnline[user.name];
         //console.log("Все клиенты ПОСЛЕ удаления:", clients, "\n");
+        console.log("Один юзер:", user, "\n");
+
+
+        wss.clients.forEach(function each(client) {
+
+            user.action = 'delAct';
+            let usersParsed = JSON.stringify(user);
+            client.send(usersParsed);
+
+            usersOnline.forEach((item, i) => {
+                if (item.name == user.name) {
+                    console.log("i:", i, "\n");
+                    console.log("юзеры ДО:", usersOnline, "\n");
+                    let deleted = usersOnline.splice(i,1);
+                    console.log("юзеры ПОСЛЕ:", usersOnline, "\n");
+                    console.log("УДАЛИЛИ:", deleted, "\n");
+                    //break;
+                }
+            })
+        });
+        console.log("wss.clients:", wss.clients, "\n");
+
+        if(wss.clients.size == 0) {
+            user.action = 'delAct';
+
+                    let deleted = usersOnline.splice(0,1);
+                    console.log("юзеры ПОСЛЕ:", usersOnline, "\n");
+                    console.log("УДАЛИЛИ:", deleted, "\n");
+
+        }
+
+        console.log("Кто онлайн:", usersOnline, "\n");
+        console.log("Полный список юзеров:", usersOffline, "\n");
 
     });
 

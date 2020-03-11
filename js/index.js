@@ -34,44 +34,62 @@ function initApp() {
     });
 
     function addMessage(message) {
+        console.log('Сообщение1:', message);
         message = JSON.parse(message);
-        if (message.action == 'messageAct') {
-            console.log('Сообщение:', message);
+        console.log('Сообщение2:', message);
 
 
-            let messageItem = document.createElement('div');
-            messageItem.className = 'message-item';
-            messageItem.textContent = `${message.name} (${message.nick}): ${message.message}, ${message.avatar}, ${message.action}`;
-
-            chat.appendChild(messageItem);
-            chat.scrollTop = chat.scrollHeight;
+        if (Array.isArray(message)) {
+            let obj;
+            message.forEach((obj)=> {
+                createUserItem(obj);
+            })
+        } else {
+            createUserItem(message);
         }
 
-        if (message.action == 'logInAct') {
-            console.log('Юзер:', message);
-            clientData = message;
+        function createUserItem(obj) {
+            if (obj.action == 'messageAct') {
+                console.log('Сообщение:', obj);
+    
+    
+                let messageItem = document.createElement('div');
+                messageItem.className = 'message-item';
+                messageItem.textContent = `${obj.name} (${obj.nick}): ${obj.message}, ${obj.avatar}, ${obj.action}`;
+    
+                chat.appendChild(messageItem);
+                chat.scrollTop = chat.scrollHeight;
+            }
+    
+            if (obj.action == 'logInAct') {
+                console.log('Юзер:', obj);
+                clientData = obj;
+    
+                let userItem = document.createElement('div');
+                let iconItem = document.createElement('div');
+                let nameItem = document.createElement('div');
+    
+    
+                userItem.className = 'user-item';
+                iconItem.className = 'icon-item';
+                nameItem.className = 'name-item';
+    
+                nameItem.textContent = obj.name;
+    
+                userItem.appendChild(iconItem);
+                userItem.appendChild(nameItem);
+                userPanel.appendChild(userItem);
+            }
 
-            let userItem = document.createElement('div');
-            let iconItem = document.createElement('div');
-            let nameItem = document.createElement('div');
-
-
-            userItem.className = 'user-item';
-            iconItem.className = 'icon-item';
-            nameItem.className = 'name-item';
-
-            nameItem.textContent = message.name;
-
-            userItem.appendChild(iconItem);
-            userItem.appendChild(nameItem);
-            userPanel.appendChild(userItem);
+            if (obj.action == 'delAct') {
+                // Удаление надо реализовать
+            }
         }
-
     }
 
 
     socket.onmessage = function (e) {
-        console.log(e.data);
+        console.log("Получили с сервера", e.data);
         addMessage(e.data);
     };
 
