@@ -5,10 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>Сергей Терешков | Выпускная работа №2| Чат </title>
-	<!-- <link href="http://allfont.ru/allfont.css?fonts=book-antiqua" rel="stylesheet" type="text/css" /> -->
 	<link rel="stylesheet" href="css/style.css">
-	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/minireset.css/0.0.2/minireset.min.css"> -->
-
 </head>
 
 <body>
@@ -17,11 +14,8 @@
 			<div class="iconCirlce">
 				<div class="icon"></div>
 			</div>
-			<!-- <div class="popup-close">&times;</div> -->
-
 			<div class="popup-form">
 				<div class="popup-form__header">Авторизация
-
 					<label for="name" class="popup-form__label">Введите, пожалуйста, ваш и ФИО и ник<br>
 						для дальнейшей авторизации</label>
 					<input type="text" class="popup-form__input" id="name" name="name"
@@ -36,9 +30,7 @@
 
 	<div class="overlay-foto">
 		<div class="popup">
-
 			<div class="popup-close">&times;</div>
-
 			<div class="popup-form">
 				<div class="popup-form__header">Загрузите аватарку
 					<label for="myfile" class="label">
@@ -59,7 +51,6 @@
 				<div class="icon" id="avatar-icon"></div>
 			</div>
 			<div class="popup-close">&times;</div>
-
 			<div class="popup-form">
 				<div class="popup-form__header">
 					<div class="button " id="ava-cancel">ОТМЕНА</div>
@@ -88,15 +79,12 @@
 		</div>
 	</div>
 
-
-
 	<script src="js/index.js"></script>
 	<script src="http://code.jquery.com/jquery-3.3.1.min.js"
 		integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 
 	<script>
 		$(document).ready(function () {
-
 			$('.main-button').on("click", function () {
 				$('.overlay').show();
 			});
@@ -128,7 +116,6 @@
 			$('.overlay-foto-result #ava-cancel').on("click", function () {
 				$('.overlay-foto-result').hide();
 			});
-
 
 			$('.currentUserPlace').on("click", function () {
 				$('.overlay-foto').show();
