@@ -35,13 +35,19 @@
 	</div>
 
 	<div class="main">
-		<div class="main-userPanel"></div>
+		<div class="main-userPanel">
+			<div class="currentUserPlace">
+				<div class="icon-item"></div>
+				<div class="name-item" id="name-item-cur"></div>
+				<div class="amount"></div>
+			</div>
+		</div>
 		<div class="main-conversationPanel">
 			<div class="main-conversationPanel-header">Чат</div>
 			<div class="main-conversationPanel-chat"></div>
 			<div class="main-conversationPanel-message">
 				<input type="text" class="main-conversationPanel-message_input" id="message" name="nick"
-					placeholder="Введите сообщение..." required autocomplete="off">
+					placeholder="Введите сообщение..." required autocomplete="off" autofocus>
 				<div class="button main-conversationPanel-message_button" id="sB">Отправить</div>
 			</div>
 		</div>

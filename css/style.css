@@ -328,7 +328,7 @@ a div:hover {
 }
 
 .main-userPanel {
-  width: 20%;
+  width: 25%;
   height: 100vh;
   border: solid 1px #101921;
   background-color: #17212b;
@@ -336,7 +336,8 @@ a div:hover {
   flex-grow: 1;
   position: relative;
   margin: 0 auto;
-  padding-top: 70px;
+  padding-top: 100px;
+  overflow-y: auto;
 }
 
 .main-conversationPanel {
@@ -353,14 +354,17 @@ a div:hover {
 }
 
 .main-conversationPanel-header {
-  height: 70px;
+  height: 100px;
   background-color: #17212b;
-  font-size: 30px;
-  line-height: 70px;
+  font-size: 40px;
+  line-height: 100px;
 }
 
 .main-conversationPanel-chat {
   flex-grow: 1;
+  position: relative;
+  padding: 20px 20px 20px 0px;
+  overflow-y: auto;
 }
 
 .main-conversationPanel-message {
@@ -415,16 +419,40 @@ a div:hover {
   position: relative;
 }
 
-.message-item {
-  text-align: right;
-}
-
 .user-item {
   width: 300px;
   height: 100px;
   margin-left: 20px;
   position: relative;
   text-align: left;
+
+}
+
+.currentUserPlace {
+  width: 300px;
+  height: 100px;
+  margin-left: 60px;
+  position: relative;
+  text-align: left;
+  margin-bottom: 50px;
+  display: none;
+
+}
+
+.currentUserPlace::before {
+  content: 'ВЫ:';
+  width: 30px;
+  height: 80px;
+  margin-left: 60px;
+  position: relative;
+  text-align: left;
+  margin-bottom: 50px;
+  position: absolute;
+  line-height: 80px;
+  vertical-align: middle;
+  top: 2;
+  left: -100px;
+  /* background-color: #242f3d; */
 }
 
 .icon-item {
@@ -437,16 +465,64 @@ a div:hover {
 
   position: absolute;
   top: 0;
-  left: 0;
+  left: -10px;
   background-color: #242f3d;
 }
 
 .name-item {
-  margin-left: 90px;
+  margin-left: 80px;
   display: inline-block;
 
   height: 100px;
   line-height: 80px;
   font-size: 20px;
+  width: 100%;
 
+}
+
+.amount {
+
+  font-size: 20px;
+  margin-top: 20px;
+
+}
+
+.user-item-chat {
+  width: 100%;
+
+  position: relative;
+  text-align: right;
+
+  /* border: 1px solid red; */
+  margin: 10px;
+}
+
+.icon-item-chat {
+  content: '';
+  display: inline-block;
+  background: url(../img/cameraIcon.png) no-repeat center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+
+  ;
+  top: 0;
+  left: -10px;
+  background-color: #242f3d;
+}
+
+.name-item-chat {
+  margin-left: 10px;
+  display: inline-block;
+  height: 100%;
+  /* line-height: 0; */
+  /* font-size: 20px; */
+  /* margin-top: 10px; */
+  vertical-align: top;
+  margin-top: 31px;
+}
+
+.message-item {
+  width: 100%;
+  display: block;
 }

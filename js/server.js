@@ -10,12 +10,15 @@ let usersOnline = [];
 let usersOffline = [];
 let clients = [];
 let messages = [];
+let amountOnline = {
+    amount: 0
+};
 
 function createNewUser(data) {
     data = JSON.parse(data);
     let user;
 
-    if (data.action == 'logInAct' || data.action == 'delAct') {
+    if (data.action == 'logInAct' || data.action == 'delAct' || data.action == 'currentUserAct' || data.action == 'messageAct') {
         let isOldUser = false;
 
         if (usersOffline != '') {
@@ -25,6 +28,9 @@ function createNewUser(data) {
                     if (user.action == 'delAct') {
                         user.action = 'logInAct';
                         usersOnline.push(user);
+                    }
+                    if (user.action == 'currentUserAct') {
+                        user.action = 'logInAct';
                     }
                     isOldUser = true;
                     break;
@@ -59,7 +65,17 @@ function createNewUser(data) {
             usersOffline.push(user);
         }
     }
-    
+
+    if (data.action == 'messageAct') {
+        user = {
+            name: data.name || '',
+            nick: data.nick || '',
+            message: data.message || '',
+            avatar: data.avatar || '',
+            action: data.action || ''
+        };
+    }
+
     return user;
 }
 
@@ -124,19 +140,42 @@ wss.on('connection', function connection(ws) {
 
         wss.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
-                
-                if (usersOnline != '') {
-                    if (client == ws) {
-                        let usersParsed = JSON.stringify(usersOnline);
-                        client.send(usersParsed);
+
+
+                if (user.action == 'logInAct') {
+                    amountOnline.amount = usersOnline.length;
+                    let usersParsed = JSON.stringify(amountOnline);
+                    client.send(usersParsed);
+
+                    if (usersOnline != '') {
+                        if (client == ws) {
+                            user.action = 'currentUserAct';
+                            let usersParsed = JSON.stringify(user);
+                            client.send(usersParsed);
+                            user.action = 'logInAct';
+
+                            usersParsed = JSON.stringify(usersOnline);
+                            client.send(usersParsed);
+                        } else {
+                            let usersParsed = JSON.stringify(user);
+                            client.send(usersParsed);
+                        }
                     } else {
                         let usersParsed = JSON.stringify(user);
                         client.send(usersParsed);
                     }
-                } else {
+                }
+
+                if (user.action == 'messageAct') {
+
+                    //user.action = 'currentAct';
+                    console.log("currentName:", user.name, "\n");
+                    console.log("currentAct:", user.action, "\n");
                     let usersParsed = JSON.stringify(user);
                     client.send(usersParsed);
+
                 }
+
 
                 // usersOnline.forEach((item)=>{
                 //     if (user.name==item.name) {
@@ -146,7 +185,7 @@ wss.on('connection', function connection(ws) {
                 // })
 
 
-                
+
                 // console.log('======');
                 // console.log("Все юзеры:", users);
                 // console.log('======');
@@ -209,21 +248,24 @@ wss.on('connection', function connection(ws) {
                 if (item.name == user.name) {
                     console.log("i:", i, "\n");
                     console.log("юзеры ДО:", usersOnline, "\n");
-                    let deleted = usersOnline.splice(i,1);
+                    let deleted = usersOnline.splice(i, 1);
                     console.log("юзеры ПОСЛЕ:", usersOnline, "\n");
                     console.log("УДАЛИЛИ:", deleted, "\n");
                     //break;
                 }
-            })
+            });
+            amountOnline.amount = usersOnline.length;
+            usersParsed = JSON.stringify(amountOnline);
+            client.send(usersParsed);
         });
-        console.log("wss.clients:", wss.clients, "\n");
+        //console.log("wss.clients:", wss.clients, "\n");
 
-        if(wss.clients.size == 0) {
+        if (wss.clients.size == 0) {
             user.action = 'delAct';
 
-                    let deleted = usersOnline.splice(0,1);
-                    console.log("юзеры ПОСЛЕ:", usersOnline, "\n");
-                    console.log("УДАЛИЛИ:", deleted, "\n");
+            let deleted = usersOnline.splice(0, 1);
+            console.log("юзеры ПОСЛЕ:", usersOnline, "\n");
+            console.log("УДАЛИЛИ:", deleted, "\n");
 
         }
 
