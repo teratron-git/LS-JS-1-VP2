@@ -34,10 +34,45 @@
 		</div>
 	</div>
 
+	<div class="overlay-foto">
+		<div class="popup">
+
+			<div class="popup-close">&times;</div>
+
+			<div class="popup-form">
+				<div class="popup-form__header">Загрузите аватарку
+					<label for="myfile" class="label">
+						<div class="itemAva">
+							<div class="iconAva" id="currentAva"></div>
+							<div class="nameAva" id="currentAvaName"></div>
+						</div>
+					</label>
+					<input type="file" class="my" id="myfile" name="myfile" onchange="encodeImageFileAsURL(this)">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="overlay-foto-result">
+		<div class="popup">
+			<div class="iconCirlce">
+				<div class="icon" id="avatar-icon"></div>
+			</div>
+			<div class="popup-close">&times;</div>
+
+			<div class="popup-form">
+				<div class="popup-form__header">
+					<div class="button " id="ava-cancel">ОТМЕНА</div>
+					<div class="button " id="ava-save">СОХРАНИТЬ</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="main">
 		<div class="main-userPanel">
 			<div class="currentUserPlace">
-				<div class="icon-item"></div>
+				<div class="icon-item" id="icon-item-cur"></div>
 				<div class="name-item" id="name-item-cur"></div>
 				<div class="amount"></div>
 			</div>
@@ -82,8 +117,21 @@
 				$('.overlay').show();
 			});
 
-			$('.popup-close').on("click", function () {
-				$('.overlay').hide();
+			$('.overlay-foto .popup-close').on("click", function () {
+				$('.overlay-foto').hide();
+			});
+
+			$('.overlay-foto-result .popup-close').on("click", function () {
+				$('.overlay-foto-result').hide();
+			});
+
+			$('.overlay-foto-result #ava-cancel').on("click", function () {
+				$('.overlay-foto-result').hide();
+			});
+
+
+			$('.currentUserPlace').on("click", function () {
+				$('.overlay-foto').show();
 			});
 
 			$('.popup-close').on("click", function () {
